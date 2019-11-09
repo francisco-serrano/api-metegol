@@ -5,11 +5,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitializeRouter() *gin.Engine {
+func InitializeRoutes(router *gin.Engine) {
 	healthController := controllers.NewHealthController()
+	participantsController := controllers.NewParticipantController()
+	tournamentsController := controllers.NewTournamentController()
 
-	router := gin.Default()
+	// Health Check
 	router.GET("/health", healthController.Health)
 
-	return router
+	// Participants
+	router.POST("/participants", participantsController.AddParticipant)
+	router.GET("/participants", participantsController.GetParticipants)
+
+	// Tournaments
+	router.POST("/tournaments", tournamentsController.AddTournament)
+	router.GET("/tournaments", tournamentsController.GetTournaments)
 }
