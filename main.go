@@ -30,10 +30,25 @@ func obtainDbConnection() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(&models.Participant{}, &models.Tournament{}, &models.Rule{}, &models.Participation{})
+	db.AutoMigrate(
+		&models.Participant{},
+		&models.Tournament{},
+		&models.Rule{},
+		&models.Participation{},
+		&models.Match{},
+	)
 
 	db.Model(&models.Participation{}).AddForeignKey("participant_id", "participants(id)", "RESTRICT", "RESTRICT")
 	db.Model(&models.Participation{}).AddForeignKey("tournament_id", "tournaments(id)", "RESTRICT", "RESTRICT")
+
+	db.Model(&models.Match{}).AddForeignKey("local_participant_one", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("local_participant_two", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("local_participant_three", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("local_participant_four", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("visitor_participant_one", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("visitor_participant_two", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("visitor_participant_three", "participants(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Match{}).AddForeignKey("visitor_participant_four", "participants(id)", "RESTRICT", "RESTRICT")
 
 	return db
 }
