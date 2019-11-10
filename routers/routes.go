@@ -1,18 +1,25 @@
 package routers
 
 import (
-	"fmt"
 	"github.com/api-metegol/controllers"
 	"github.com/api-metegol/utils"
 	"github.com/gin-gonic/gin"
 )
 
 func InitializeRoutes(router *gin.Engine, deps utils.Dependencies) {
-	fmt.Println("AAAAAAAAAAAA", deps)
-
 	healthController := controllers.NewHealthController()
-	participantsController := controllers.NewParticipantController()
-	tournamentsController := controllers.NewTournamentController()
+
+	participantsController := controllers.ParticipantController{
+		ServiceFactory: func() *controllers.ParticipantService {
+			return controllers.NewParticipantService(deps.Db)
+		},
+	}
+
+	tournamentsController := controllers.TournamentController{
+		ServiceFactory: func() *controllers.TournamentService {
+			return controllers.NewTournamentService(deps.Db)
+		},
+	}
 
 	// Health Check
 	router.GET("/health", healthController.Health)

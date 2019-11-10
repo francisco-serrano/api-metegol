@@ -36,6 +36,7 @@ func obtainDbConnection() *gorm.DB {
 		&models.Rule{},
 		&models.Participation{},
 		&models.Match{},
+		&models.RuleMatch{},
 	)
 
 	db.Model(&models.Participation{}).AddForeignKey("participant_id", "participants(id)", "RESTRICT", "RESTRICT")
@@ -49,6 +50,9 @@ func obtainDbConnection() *gorm.DB {
 	db.Model(&models.Match{}).AddForeignKey("visitor_participant_two", "participants(id)", "RESTRICT", "RESTRICT")
 	db.Model(&models.Match{}).AddForeignKey("visitor_participant_three", "participants(id)", "RESTRICT", "RESTRICT")
 	db.Model(&models.Match{}).AddForeignKey("visitor_participant_four", "participants(id)", "RESTRICT", "RESTRICT")
+
+	db.Model(&models.RuleMatch{}).AddForeignKey("rule_id", "rules(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.RuleMatch{}).AddForeignKey("match_id", "matches(id)", "RESTRICT", "RESTRICT")
 
 	return db
 }
